@@ -23,6 +23,7 @@ linkedin: "#"
 github: "#"
 researchgate: "#"
 orcid: "#"
+youtube: "#"
 
 highlighter: rouge
 markdown: kramdown
