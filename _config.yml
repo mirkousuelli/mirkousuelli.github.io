@@ -1,7 +1,7 @@
 ### your site title here
 
 title: Mirko Usuelli
-description: Computer Engineer
+description: PhD Candidate in Multimodal perception for Agricultural Robotics | Robotics & AI Engineer
 
 baseurl: / #name of GitHub repository
 url: "" #custom url to be used instead of GitHub repository
@@ -18,7 +18,7 @@ paginate_path: /blog/page:num/
 
 # Social media links in footer
 #facebook: "#"
-twitter: "_foxmirko"
+#twitter: "_foxmirko"
 linkedin: "mirko-usuelli-64992b155/"
 github: "mirkousuelli"
 #researchgate: "#"
