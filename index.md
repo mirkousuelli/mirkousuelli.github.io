@@ -7,9 +7,12 @@ profile:
 published: true
 ---
 
-Hello friend, I'm Mirko and I live in Italy, in a small town called Melzo near Milan. I am a MSc student in Computer Science and Engineering at [Politecnico di Milano](https://www.polimi.it){:target="_blank"}. My studies are mainly focused on Artificial Intelligence and Machine Learning with a major on Deep Learning and a minor on Robotics.
+Hello friend,
 
-I have plenty of hobbies (really... too many to be listed): from cooking, going through TV series until travelling, but what I mostly do is studying. Well not just engineering (mmh...), I am constantly up-to-date on what happens around the world, politically and environmentally. 
-The reason why I love studying AI is because I deeply dislike the society and I think through these technologies is possible to pursue equality and real freedom.
+🤖 I'm a Computer Scientist with engineering backround at [Politecnico di Milano](https://www.polimi.it){:target="_blank"} specializing in robotics and artificial intelligence, with a strong focus on deep learning and sensor fusion for robotics applications. My research during my master's thesis involved applying SLAM techniques to agriculture, which sparked my passion for robotics perception.
+
+🧠 Currently, I'm pursuing a Ph.D. in Multimodal Perception for Agricultural Robotics, where I explore the exciting challenges at the intersection of robotics, AI, and agriculture. My research centers around integrating sensor data in agricultural robotics to enhance perception capabilities. I'm particularly interested in soft robotics for delicate picking tasks within the agricultural sector.
+
+🌱 I'm motivated to drive innovation in agriculture through robotics and AI. Let's connect and explore the practical applications of these technologies in the agricultural sector.
 
 If you want to see a [younger Mirko](https://youtu.be/Ae9d-DObKBA){:target="_blank"} go to my Youtube channel, otherwise here there are other social links ;)
