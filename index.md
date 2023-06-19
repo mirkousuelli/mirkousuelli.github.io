@@ -11,7 +11,7 @@ Hello friend,
 
 🤖 I'm a Computer Scientist with engineering backround at [Politecnico di Milano](https://www.polimi.it){:target="_blank"} specializing in robotics and artificial intelligence, with a strong focus on deep learning and sensor fusion for robotics applications. My research during my master's thesis involved applying SLAM techniques to agriculture, which sparked my passion for robotics perception.
 
-🧠 Currently, I'm pursuing a Ph.D. in Multimodal Perception for Agricultural Robotics, where I explore the exciting challenges at the intersection of robotics, AI, and agriculture. My research centers around integrating sensor data in agricultural robotics to enhance perception capabilities. I'm particularly interested in soft robotics for delicate picking tasks within the agricultural sector.
+🧠 Currently, I'm pursuing a Ph.D. in Multimodal Perception for Agricultural Robotics, where I explore the exciting challenges at the intersection of robotics, AI, and agriculture. My research centers around integrating sensor data in agricultural robotics to enhance perception capabilities.
 
 🌱 I'm motivated to drive innovation in agriculture through robotics and AI. Let's connect and explore the practical applications of these technologies in the agricultural sector.
 
