@@ -3,16 +3,16 @@ layout: about
 permalink: /
 profile:
   align: right
-  image: profile.png
+  image: profile.jpg
 published: true
 ---
 
-Hello friend,
+Hello friend 👋
 
-🤖 I'm a Computer Scientist with engineering backround at [Politecnico di Milano](https://www.polimi.it){:target="_blank"} specializing in robotics and artificial intelligence, with a strong focus on deep learning and sensor fusion for robotics applications. My research during my master's thesis involved applying SLAM techniques to agriculture, which sparked my passion for robotics perception.
+My research focuses on **multimodal perception for autonomous agricultural robots** — combining SLAM, sensor fusion, computer vision, and deep learning to bring robust scene understanding to field machinery. I work in the [AI and Robotics Lab](https://airlab.deib.polimi.it){:target="_blank"} under the supervision of Prof. Matteo Matteucci.
 
-🧠 Currently, I'm pursuing a Ph.D. in Multimodal Perception for Agricultural Robotics, where I explore the exciting challenges at the intersection of robotics, AI, and agriculture. My research centers around integrating sensor data in agricultural robotics to enhance perception capabilities.
+In 2025 I spent six months as a Visiting Researcher at [Wageningen University & Research](https://www.wur.nl){:target="_blank"}, working on orchard perception for agricultural robots.
 
-🌱 I'm motivated to drive innovation in agriculture through robotics and AI. Let's connect and explore the practical applications of these technologies in the agricultural sector.
+I'm motivated to drive innovation in agriculture through robotics and AI. Check out my [projects & research](/projects/){:target="_blank"}, or connect via the links above.
 
-If you want to see a [younger Mirko](https://youtu.be/Ae9d-DObKBA){:target="_blank"} go to my Youtube channel, otherwise here there are other social links ;)
+If you want to see a [younger Mirko](https://youtu.be/Ae9d-DObKBA){:target="_blank"}, go to my YouTube channel ;)

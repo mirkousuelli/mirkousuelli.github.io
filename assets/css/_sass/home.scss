@@ -1,0 +1,381 @@
+/* ============================================================
+   Unified template — home & project pages.
+   Neutral white/charcoal palette with dark-mode toggle.
+   ============================================================ */
+
+/* --- CSS variables: light defaults, overridden by [data-theme="dark"] --- */
+/* Royal red (light) / glowing green (dark) */
+:root {
+  --page-bg: #ffffff;
+  --page-bg-alt: #f4f4f4;
+  --text: #111111;
+  --text-muted: #555555;
+  --text-soft: #888888;
+  --border: #e0e0e0;
+  --accent: #8b1a2f;
+  --accent-hover: #6e1424;
+  --btn-bg: #8b1a2f;
+  --btn-text: #ffffff;
+  --btn-bg-hover: #6e1424;
+  --card-bg: #f7f7f7;
+  --card-shadow: 0 1px 10px rgba(0,0,0,0.07);
+  --card-shadow-hover: 0 4px 20px rgba(0,0,0,0.13);
+  --tag-bg: #fde8ec;
+  --tag-text: #8b1a2f;
+}
+
+[data-theme="dark"] {
+  --page-bg: #0e0e0e;
+  --page-bg-alt: #161616;
+  --text: #e8e8e8;
+  --text-muted: #999999;
+  --text-soft: #666666;
+  --border: #2a2a2a;
+  --accent: #39ff6e;
+  --accent-hover: #66ff8e;
+  --btn-bg: #39ff6e;
+  --btn-text: #0a0a0a;
+  --btn-bg-hover: #66ff8e;
+  --card-bg: #161616;
+  --card-shadow: 0 1px 10px rgba(0,0,0,0.5);
+  --card-shadow-hover: 0 4px 20px rgba(0,0,0,0.7);
+  --tag-bg: #052210;
+  --tag-text: #39ff6e;
+}
+
+/* --- Base overrides --- */
+html, body {
+  background: var(--page-bg) !important;
+  color: var(--text) !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  font-family: "Inter", "Work Sans", sans-serif;
+}
+
+a {
+  color: var(--accent) !important;
+  &:hover {
+    color: var(--accent-hover) !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Light theme explicit — same as :root defaults, ensures red in light mode always */
+[data-theme="light"] {
+  --page-bg: #ffffff;
+  --page-bg-alt: #f4f4f4;
+  --text: #111111;
+  --text-muted: #555555;
+  --text-soft: #888888;
+  --border: #e0e0e0;
+  --accent: #8b1a2f;
+  --accent-hover: #6e1424;
+  --btn-bg: #8b1a2f;
+  --btn-text: #ffffff;
+  --btn-bg-hover: #6e1424;
+  --card-bg: #f7f7f7;
+  --card-shadow: 0 1px 10px rgba(0,0,0,0.07);
+  --card-shadow-hover: 0 4px 20px rgba(0,0,0,0.13);
+  --tag-bg: #fde8ec;
+  --tag-text: #8b1a2f;
+}
+
+p a {
+  color: var(--text) !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s;
+  &:hover {
+    color: var(--text) !important;
+    text-decoration-color: var(--text-muted);
+    background: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* --- Site header --- */
+.site-header {
+  padding-bottom: 0.6em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.4em;
+  position: relative;
+}
+
+a.site-title-link {
+  text-decoration: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  &:hover h1 { color: var(--accent) !important; }
+}
+
+h1.post-headline {
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+  transition: color 0.15s;
+}
+
+.links.scroll a {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  padding: 0.2em 0.75em 0.2em 0;
+  border-bottom: 1px solid transparent;
+  background: none !important;
+  box-shadow: none !important;
+  &:hover {
+    color: var(--text) !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* --- Dark mode toggle button (top-right) --- */
+.theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1rem;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  &:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+    background: var(--page-bg-alt);
+  }
+  .icon-sun  { display: none; }
+  .icon-moon { display: block; }
+}
+
+[data-theme="dark"] .theme-toggle {
+  .icon-sun  { display: block; }
+  .icon-moon { display: none; }
+}
+
+/* ============================================================
+   Home hero
+   ============================================================ */
+.home-hero {
+  text-align: center;
+  padding: 1.2em 0 0.8em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.8em;
+}
+
+.home-profile {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--card-shadow);
+  border: 3px solid var(--border);
+  margin: 0 auto 0.9em;
+  display: block;
+}
+
+.home-name {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0.15em 0 0.05em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.home-role {
+  font-size: 1em;
+  color: var(--text-muted);
+  margin: 0.2em 0;
+}
+
+.home-tags {
+  font-size: 0.82em;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  margin: 0.1em 0 0.9em;
+  font-weight: 500;
+}
+
+.home-affil {
+  font-size: 0.9em;
+  color: var(--text-soft);
+  margin: 0.1em 0 1em;
+  a {
+    color: var(--accent) !important;
+    text-decoration: none;
+    background: none !important;
+    box-shadow: none !important;
+    &:hover {
+      color: var(--accent-hover) !important;
+      text-decoration: underline;
+    }
+  }
+}
+
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45em;
+  margin-top: 0.3em;
+}
+
+.home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.4em 0.9em;
+  border-radius: 999px;
+  background: var(--btn-bg) !important;
+  color: var(--btn-text) !important;
+  font-size: 0.88em;
+  font-weight: 500;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: background-color 0.15s, transform 0.1s;
+  i { font-size: 0.95em; }
+  &:hover {
+    background: var(--btn-bg-hover) !important;
+    color: var(--btn-text) !important;
+    transform: translateY(-1px);
+  }
+}
+
+/* ============================================================
+   Bio
+   ============================================================ */
+.home-bio {
+  font-size: 0.98em;
+  line-height: 1.75;
+  color: var(--text);
+  p {
+    color: var(--text);
+    margin: 0.6em 0;
+  }
+}
+
+/* ============================================================
+   Social footer icons
+   ============================================================ */
+.rounded-social-buttons {
+  margin-top: 1.4em;
+}
+
+/* ============================================================
+   Projects list
+   ============================================================ */
+.pub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+
+.pub-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 1em 1.1em;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.15s, transform 0.12s;
+  text-decoration: none !important;
+  color: var(--text) !important;
+  &:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+    color: var(--text) !important;
+    background: var(--card-bg);
+  }
+}
+
+.pub-body {
+  flex: 1;
+}
+
+.pub-title {
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+  margin: 0 0 0.25em;
+}
+
+.pub-venue {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.pub-tag {
+  display: inline-block;
+  font-size: 0.75em;
+  font-weight: 500;
+  padding: 0.15em 0.55em;
+  border-radius: 4px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  margin-right: 0.35em;
+  white-space: nowrap;
+}
+
+.pub-arrow {
+  color: var(--text-soft);
+  font-size: 0.9em;
+  margin-top: 0.15em;
+  flex-shrink: 0;
+  transition: color 0.12s;
+}
+
+.pub-item:hover .pub-arrow {
+  color: var(--text);
+}
+
+.page-title {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1.2em;
+}
+
+/* ============================================================
+   Misc dark-mode tweaks
+   ============================================================ */
+.copy, footer p, footer small {
+  color: var(--text-soft);
+}
+
+pre, code {
+  background: var(--page-bg-alt) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+blockquote {
+  color: var(--text-muted);
+  border-left-color: var(--border);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .home-profile { width: 120px; height: 120px; }
+  .home-name { font-size: 1.6em; }
+  .home-btn { font-size: 0.82em; padding: 0.35em 0.75em; }
+}

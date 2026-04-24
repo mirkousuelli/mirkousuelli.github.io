@@ -8,11 +8,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1" name="viewport">
         <link rel="stylesheet" href="{{site.baseurl}}/assets/css/main.css">
-
-        <h1 class="post-headline">{{site.title}}</h1>
-        <h3 class="post-description">{{site.description}}</h3>
-
-        {% include navigation.html %}
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         {% seo %}
 
@@ -20,33 +16,66 @@
 
         {% include mathjax.html %}
 
-        <!-- Load fontawesome here for faster loadtimes: https://stackoverflow.com/a/35880730/9523246 -->
-        <script type="text/javascript"> (function() { var css = document.createElement('link'); css.href = 'https://use.fontawesome.com/releases/v5.11.0/css/all.css'; css.rel = 'stylesheet'; css.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(css); })(); </script>
+        <!-- FontAwesome -->
+        <script type="text/javascript">
+          (function() {
+            var css = document.createElement('link');
+            css.href = 'https://use.fontawesome.com/releases/v5.11.0/css/all.css';
+            css.rel = 'stylesheet'; css.type = 'text/css';
+            document.getElementsByTagName('head')[0].appendChild(css);
+          })();
+        </script>
 
+        <!-- Theme: always set data-theme before paint so CSS variables are unambiguous -->
+        <script>
+          (function() {
+            var stored = localStorage.getItem('theme');
+            var theme = stored
+              ? stored
+              : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+          })();
+        </script>
     </head>
 
     <body>
         <main>
             <article>
+                <header class="site-header">
+                  <a href="{{site.baseurl}}/" class="site-title-link">
+                    <h1 class="post-headline">{{site.title}}</h1>
+                  </a>
+                  {% include navigation.html %}
+                  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                    <i class="fas fa-sun icon-sun"></i>
+                    <i class="fas fa-moon icon-moon"></i>
+                  </button>
+                </header>
+
                 {{ content }}
             </article>
         </main>
 
-        {% include social-footer.html %}
-
         <footer>
           <p class="copy">
-            <small> &copy; {{site.title}} {{ site.time | date: '%Y' }}
-                    <!--| Powered by Jekyll and
-                    <a target="_blank" href="https://github.com/jitinnair1/gradfolio/">Gradfolio</a>.
-                    Last updated on {{ site.time | date_to_long_string }}-->
-            </small>
+            <small>&copy; {{site.title}} {{ site.time | date: '%Y' }}</small>
           </p>
-
         </footer>
 
         {% include analytics.html %}
 
+        <script>
+          (function() {
+            var btn = document.getElementById('theme-toggle');
+            if (!btn) return;
+            btn.addEventListener('click', function() {
+              var current = document.documentElement.getAttribute('data-theme');
+              var next = current === 'dark' ? 'light' : 'dark';
+              document.documentElement.setAttribute('data-theme', next);
+              localStorage.setItem('theme', next);
+            });
+          })();
+        </script>
     </body>
 
 </html>

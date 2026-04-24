@@ -2,10 +2,40 @@
 layout: default
 ---
 
-{% if page.profile %}
-    {% if page.profile.image %}
-      <img class="profile {{ page.profile.align }}"  width="33.33%" src="{{ page.profile.image | prepend: '/assets/images/' | prepend: site.baseurl | prepend: site.url }}">
-    {% endif %}
-{% endif %}
+<section class="home-hero">
+  {% if page.profile and page.profile.image %}
+    <img class="home-profile"
+         src="{{ page.profile.image | prepend: '/assets/images/' | prepend: site.baseurl | prepend: site.url }}"
+         alt="{{ site.title }}">
+  {% endif %}
 
-{{ content }}
+  <p class="home-role">Ph.D. Candidate in Agricultural Robotics &amp; Perception Engineer</p>
+  <p class="home-affil">
+    <a href="https://airlab.deib.polimi.it" target="_blank">AIRLab</a>
+    &mdash;
+    <a href="https://www.polimi.it" target="_blank">Politecnico di Milano</a>
+  </p>
+  <p class="home-tags">SLAM &middot; Sensor Fusion &middot; 3D Reconstruction &middot; Computer Vision &middot; Agricultural Robotics</p>
+
+  <div class="home-links">
+    <a class="home-btn" href="https://github.com/mirkousuelli" target="_blank">
+      <i class="fab fa-github"></i><span>GitHub</span>
+    </a>
+    <a class="home-btn" href="https://www.linkedin.com/in/mirko-usuelli-64992b155/" target="_blank">
+      <i class="fab fa-linkedin"></i><span>LinkedIn</span>
+    </a>
+    <a class="home-btn" href="https://www.youtube.com/channel/UCTI5mzzDYtfzulaaktHr-ZQ" target="_blank">
+      <i class="fab fa-youtube"></i><span>YouTube</span>
+    </a>
+    <a class="home-btn" href="{{ site.baseurl }}/Mirko_Usuelli_CV.pdf" target="_blank">
+      <i class="fas fa-file-pdf"></i><span>CV</span>
+    </a>
+    <a class="home-btn" href="{{ site.baseurl }}/projects/">
+      <i class="fas fa-flask"></i><span>Projects</span>
+    </a>
+  </div>
+</section>
+
+<section class="home-bio">
+  {{ content }}
+</section>

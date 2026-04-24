@@ -1,9 +1,9 @@
 ### your site title here
 
 title: Mirko Usuelli
-description: PhD Candidate in Multimodal perception for Agricultural Robotics | Robotics & AI Engineer
+description: Ph.D. Candidate in Agricultural Robotics, Perception Engineer at Politecnico di Milano | SLAM, Sensor Fusion, Computer Vision
 
-baseurl: / #name of GitHub repository
+baseurl: "" #name of GitHub repository (empty for user/org sites served at root)
 url: "" #custom url to be used instead of GitHub repository
 email: #
 
@@ -51,6 +51,11 @@ collections:
 sass:
   sass_dir: /assets/css/_sass
   style: compressed
+  quiet_deps: true
+  silence_deprecations:
+    - import
+    - global-builtin
+    - color-functions
 
 include:
   - _pages
@@ -58,6 +63,9 @@ include:
 exclude:
   - README.md
   - LICENSE.md
+  - LICENSE
+  - manuscript
+  - new_profile_picture.jpg
 
 plugins:
   - jekyll-seo-tag
