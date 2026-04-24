@@ -402,6 +402,7 @@ blockquote {
 
 /* Responsive */
 @media screen and (max-width: 600px) {
+  .home-profile-wrap { width: 120px; height: 120px; }
   .home-profile { width: 120px; height: 120px; }
   .home-name { font-size: 1.6em; }
   .home-btn { font-size: 0.82em; padding: 0.35em 0.75em; }
