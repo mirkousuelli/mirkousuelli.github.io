@@ -175,15 +175,43 @@ h1.post-headline {
   margin-bottom: 1.8em;
 }
 
+.home-profile-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 0.9em;
+  display: block;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  cursor: default;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    /* light mode: opposite = green */
+    background: radial-gradient(circle, rgba(57,255,110,0.55) 0%, rgba(21,160,80,0.3) 100%);
+  }
+  &:hover::after { opacity: 1; }
+}
+
+[data-theme="dark"] .home-profile-wrap::after {
+  /* dark mode: opposite = red */
+  background: radial-gradient(circle, rgba(220,40,60,0.55) 0%, rgba(139,26,47,0.3) 100%);
+}
+
 .home-profile {
   width: 160px;
   height: 160px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: var(--card-shadow);
   border: 3px solid var(--border);
-  margin: 0 auto 0.9em;
   display: block;
+  transition: transform 0.35s ease;
+  .home-profile-wrap:hover & { transform: scale(1.04); }
 }
 
 .home-name {
@@ -244,12 +272,11 @@ h1.post-headline {
   font-weight: 500;
   text-decoration: none !important;
   box-shadow: none !important;
-  transition: background-color 0.15s, transform 0.1s;
+  transition: background-color 0.15s;
   i { font-size: 0.95em; }
   &:hover {
     background: var(--btn-bg-hover) !important;
     color: var(--btn-text) !important;
-    transform: translateY(-1px);
   }
 }
 
