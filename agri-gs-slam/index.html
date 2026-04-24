@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title" content="AgriGS-SLAM — Orchard Mapping Across Seasons via Multi-View Gaussian Splatting SLAM">
+  <meta name="description" content="AgriGS-SLAM: a real-time Visual–LiDAR 3D Gaussian Splatting SLAM framework for orchard mapping across dormancy, flowering and harvesting seasons.">
+  <meta name="keywords" content="SLAM, 3D Gaussian Splatting, Agricultural Robotics, Sensor Fusion, LiDAR, Orchard Mapping, RGB-D Perception, Field Robots">
+  <meta name="author" content="Mirko Usuelli, David Rapado-Rincon, Gert Kootstra, Matteo Matteucci">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Politecnico di Milano — AIRLab">
+  <meta property="og:title" content="AgriGS-SLAM — Orchard Mapping Across Seasons via Multi-View Gaussian Splatting SLAM">
+  <meta property="og:description" content="A real-time Visual–LiDAR 3DGS-based SLAM framework for large-scale agricultural environments.">
+  <meta property="og:url" content="https://mirkousuelli.github.io/agri-gs-slam/">
+  <meta property="og:image" content="https://mirkousuelli.github.io/img/cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AgriGS-SLAM">
+  <meta name="twitter:description" content="Orchard Mapping Across Seasons via Multi-View Gaussian Splatting SLAM.">
+  <meta name="twitter:image" content="https://mirkousuelli.github.io/img/cover.png">
+
+  <meta name="citation_title" content="AgriGS-SLAM: Orchard Mapping Across Seasons Via Multi-View Gaussian Splatting SLAM">
+  <meta name="citation_author" content="Usuelli, Mirko">
+  <meta name="citation_author" content="Rapado-Rincon, David">
+  <meta name="citation_author" content="Kootstra, Gert">
+  <meta name="citation_author" content="Matteucci, Matteo">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="IEEE Robotics and Automation Letters">
+  <meta name="citation_arxiv_id" content="2510.26358">
+
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e0e0e" media="(prefers-color-scheme: dark)">
+
+  <title>AgriGS-SLAM — Orchard Mapping Across Seasons via Multi-View Gaussian Splatting SLAM</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+
+  <!-- Bulma via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Always set data-theme before paint -->
+  <script>
+    (function() {
+      var stored = localStorage.getItem('theme');
+      var theme = stored
+        ? stored
+        : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <style>
+    /* ── CSS variables ─────────────────────────────────────── */
+    :root {
+      --page-bg:     #ffffff;
+      --page-bg-alt: #f4f4f4;
+      --text:        #111111;
+      --text-muted:  #555555;
+      --text-soft:   #888888;
+      --border:      #e0e0e0;
+      --fig-shadow:  0 2px 18px rgba(0,0,0,0.08);
+      --code-bg:     #f4f4f4;
+    }
+    [data-theme="light"] {
+      --page-bg:#ffffff; --page-bg-alt:#f4f4f4;
+      --text:#111111; --text-muted:#555555; --text-soft:#888888;
+      --border:#e0e0e0; --fig-shadow:0 2px 18px rgba(0,0,0,.08); --code-bg:#f4f4f4;
+    }
+    [data-theme="dark"] {
+      --page-bg:     #0e0e0e;
+      --page-bg-alt: #161616;
+      --text:        #e8e8e8;
+      --text-muted:  #999999;
+      --text-soft:   #666666;
+      --border:      #2a2a2a;
+      --fig-shadow:  0 2px 22px rgba(0,0,0,0.6);
+      --code-bg:     #161616;
+    }
+
+    /* ── Dark overrides for Bulma ──────────────────────────── */
+    [data-theme="dark"] body,
+    [data-theme="dark"] .title,
+    [data-theme="dark"] .subtitle,
+    [data-theme="dark"] .publication-title,
+    [data-theme="dark"] .publication-authors,
+    [data-theme="dark"] .content,
+    [data-theme="dark"] .content p,
+    [data-theme="dark"] .content li,
+    [data-theme="dark"] figcaption { color: var(--text) !important; }
+    [data-theme="dark"] body        { background: var(--page-bg); color: var(--text); }
+    [data-theme="dark"] .hero.is-light { background-color: var(--page-bg-alt) !important; }
+    [data-theme="dark"] .hero:not(.is-light) { background-color: var(--page-bg) !important; }
+    [data-theme="dark"] section      { background-color: transparent; }
+    [data-theme="dark"] a            { color: var(--text-muted); }
+    [data-theme="dark"] .button.is-dark {
+      background-color: #1e1e1e !important; color: #e8e8e8 !important; border-color: #2a2a2a !important;
+    }
+    [data-theme="dark"] .button.is-dark:hover { background-color: #2e2e2e !important; }
+    [data-theme="dark"] pre, [data-theme="dark"] code { background: var(--code-bg) !important; color: var(--text) !important; }
+    [data-theme="dark"] .footer  { background: var(--page-bg-alt) !important; }
+    [data-theme="dark"] figcaption { color: var(--text-muted) !important; }
+
+    /* ── Base ──────────────────────────────────────────────── */
+    body { font-family: "Inter", sans-serif; background: var(--page-bg); color: var(--text); }
+    figcaption { color: var(--text-muted); font-size: 0.93rem; margin-top: 0.6rem; text-align: center; line-height: 1.5; }
+
+    /* ── Dark mode FAB ─────────────────────────────────────── */
+    .theme-toggle-fab {
+      position: fixed; top: 1rem; right: 1rem; z-index: 9999;
+      background: rgba(255,255,255,0.88); border: 1px solid #e0e0e0;
+      border-radius: 999px; width: 2.5rem; height: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.05rem; color: #555;
+      backdrop-filter: blur(6px); box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: background 0.15s, color 0.15s;
+    }
+    [data-theme="dark"] .theme-toggle-fab {
+      background: rgba(20,20,20,0.88); border-color: #2a2a2a; color: #aaa;
+    }
+    .theme-toggle-fab .icon-sun  { display: none; }
+    .theme-toggle-fab .icon-moon { display: block; }
+    [data-theme="dark"] .theme-toggle-fab .icon-sun  { display: block; }
+    [data-theme="dark"] .theme-toggle-fab .icon-moon { display: none; }
+
+    /* ── Scroll to top ─────────────────────────────────────── */
+    .scroll-top-btn {
+      position: fixed; bottom: 1.5rem; right: 1rem; z-index: 9999;
+      background: rgba(255,255,255,0.88); border: 1px solid #e0e0e0;
+      border-radius: 999px; width: 2.5rem; height: 2.5rem;
+      display: none; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.9rem; color: #555;
+      backdrop-filter: blur(6px); box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: background 0.15s;
+    }
+    .scroll-top-btn.visible { display: flex; }
+    [data-theme="dark"] .scroll-top-btn { background: rgba(20,20,20,0.88); border-color: #2a2a2a; color: #aaa; }
+
+    /* ── Wide figure wrapper ───────────────────────────────── */
+    .wide-fig {
+      width: 100%; max-width: 1280px;
+      margin: 1rem auto; padding: 0 1rem;
+      text-align: center;
+    }
+    .wide-fig img {
+      width: 100%; border-radius: 10px;
+      box-shadow: var(--fig-shadow);
+    }
+    .cover-fig img { width: 100%; border-radius: 10px; box-shadow: var(--fig-shadow); }
+
+    /* ── Dataset banner ────────────────────────────────────── */
+    .dataset-banner {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 1.2rem 1.5rem; margin: 1.5rem auto; max-width: 800px;
+      text-align: center; background: var(--page-bg-alt);
+    }
+    .dataset-banner p { color: var(--text-muted); margin: 0.5rem 0 0; font-size: 0.95rem; }
+    .tag-soon {
+      display: inline-block; background: #111; color: #fff;
+      border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+      padding: 0.2em 0.75em; letter-spacing: 0.04em; margin-bottom: 0.4rem;
+    }
+    [data-theme="dark"] .tag-soon { background: #e8e8e8; color: #111; }
+
+    /* ── Funding logos ─────────────────────────────────────── */
+    .funding-grid {
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: center;
+      gap: 2.5rem; margin-top: 1.6rem;
+    }
+    .funding-grid a { display: block; }
+    .funding-grid img {
+      height: 72px; width: auto; max-width: 220px;
+      object-fit: contain; filter: grayscale(10%); opacity: 0.9;
+      transition: opacity 0.15s, filter 0.15s;
+    }
+    .funding-grid img:hover { opacity: 1; filter: none; }
+    [data-theme="dark"] .funding-grid img { filter: grayscale(20%) brightness(0.85); opacity: 0.8; }
+    [data-theme="dark"] .funding-grid img:hover { opacity: 1; filter: brightness(1.05); }
+
+    /* AgrifoodTEF black logo on dark button → invert */
+    .tef-icon { filter: invert(1); }
+
+    /* ── Author name hover animation ──────────────────────── */
+    .publication-authors a {
+      color: #4a90d9;
+      font-weight: 500;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s ease, font-weight 0.2s ease;
+    }
+    .publication-authors a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, #e03a3a, #f07030, #e8407a);
+      background-size: 200% 100%;
+      transition: width 0.3s ease;
+    }
+    .publication-authors a:hover {
+      color: #2563c7;
+      font-weight: 700;
+    }
+    .publication-authors a:hover::after {
+      width: 100%;
+    }
+    [data-theme="dark"] .publication-authors a { color: #7ab4f5; }
+    [data-theme="dark"] .publication-authors a:hover { color: #a8ccf8; font-weight: 700; }
+
+    /* ── Button hover → blue ──────────────────────────────── */
+    .publication-links .button.is-dark {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+    .publication-links .button.is-dark:not([aria-disabled="true"]):hover {
+      background-color: #4a90d9 !important;
+      border-color: #4a90d9 !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+    }
+    [data-theme="dark"] .publication-links .button.is-dark:not([aria-disabled="true"]):hover {
+      background-color: #7ab4f5 !important;
+      border-color: #7ab4f5 !important;
+      color: #0a0a0a !important;
+    }
+
+    /* ── Button rows ───────────────────────────────────────── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .btn-row + .btn-row { margin-top: 0.65rem; }
+
+    /* ── Reduce gap between hero title and cover image ─────── */
+    .hero > .hero-body { padding-bottom: 0.75rem; }
+    .hero.teaser > .hero-body { padding-top: 0.75rem; }
+
+    /* ── Gradient section dividers ─────────────────────────── */
+    .section-divider {
+      border: none;
+      height: 2px;
+      width: 60px;
+      margin: 0 auto;
+      background: linear-gradient(90deg, #e03a3a, #f07030, #e8407a);
+      opacity: 0.65;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="theme-toggle-fab" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <i class="fas fa-sun icon-sun"></i>
+    <i class="fas fa-moon icon-moon"></i>
+  </button>
+
+  <button class="scroll-top-btn" id="scroll-top" aria-label="Scroll to top" title="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container" style="max-width:1160px;">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">🚜 AgriGS-SLAM: Orchard Mapping Across Seasons via Multi-View Gaussian Splatting SLAM</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="/" >Mirko Usuelli</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://www.wur.nl/en/persons/david-drr-david-rapado-rincon-msc.htm" target="_blank">David Rapado-Rincon</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="https://www.wur.nl/en/persons/gert-dr-g-gert-kootstra.htm" target="_blank">Gert Kootstra</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="https://airlab.deib.polimi.it/people/matteo-matteucci/" target="_blank">Matteo Matteucci</a><sup>1</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors" style="margin-top:0.4rem;">
+              <span class="author-block"><sup>1</sup>Politecnico di Milano &nbsp;&nbsp; <sup>2</sup>Wageningen University &amp; Research</span>
+              <br>
+              <span class="author-block"><b>IEEE Robotics and Automation Letters</b>, 2026</span>
+            </div>
+
+            <div class="column has-text-centered" style="margin-top:0.6rem;">
+              <!-- Row 1: active links -->
+              <div class="btn-row">
+                <span class="link-block">
+                  <a href="https://ieeexplore.ieee.org/document/11487946" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-ieee"></i></span>
+                    <span>IEEE Xplore</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/AIRLab-POLIMI/agri-gs-slam" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/AIRLab-POLIMI/agri-gs-slam" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">🤗</span>
+                    <span>Dataset Preview</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2510.26358" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv Preprint</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="/" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span>Author's Page</span>
+                  </a>
+                </span>
+              </div>
+              <!-- Row 2: coming-soon dataset buttons -->
+              <div class="btn-row">
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark"
+                     style="opacity:0.5; cursor:not-allowed; pointer-events:none;" tabindex="-1" aria-disabled="true">
+                    <span class="icon">🤗</span>
+                    <span>Training Dataset <small style="opacity:0.8;">(Soon)</small></span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark"
+                     style="opacity:0.5; cursor:not-allowed; pointer-events:none;" tabindex="-1" aria-disabled="true">
+                    <span class="icon" style="display:inline-flex;align-items:center;height:100%;">
+                      <img src="https://agrifoodtef.eu/sites/default/files/2025-05/AgrifoodTEF%20Horizontal%20logo%20All%20Black.svg"
+                           alt="AgrifoodTEF" class="tef-icon" style="height:1em; width:auto;">
+                    </span>
+                    <span>Validation Dataset <small style="opacity:0.8;">(Soon)</small></span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Cover ─────────────────────────────────────────────── -->
+  <section class="hero teaser">
+    <div class="container is-max-widescreen">
+      <div class="hero-body">
+        <figure class="cover-fig">
+          <img src="/img/cover.png" alt="AgriGS-SLAM graphical abstract">
+          <figcaption>
+            The agricultural robot traverses both apple and pear orchards across dormancy, flowering, and harvesting
+            using a standardized trajectory that separates training-view and novel-view evaluation zones.
+            LiDAR keyframes trigger a loop-closing factor graph, while background 3DGS optimization refines
+            Gaussian submaps and camera poses jointly through a multimodal geometric–photometric loss.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Abstract ──────────────────────────────────────────── -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Agricultural robots operating in orchards face a uniquely difficult perception problem: rows of trees
+              look nearly identical, canopy appearance shifts dramatically across seasons, and wind-driven foliage
+              creates constant scene perturbations — all while the platform must localize and map in real time.
+              Existing 3D Gaussian Splatting SLAM methods were designed for controlled, static indoor environments
+              and transfer poorly to these conditions.
+            </p>
+            <p>
+              We present <b>AgriGS-SLAM</b>, a unified Visual–LiDAR SLAM framework that couples direct LiDAR odometry
+              and loop closures with multi-camera 3D Gaussian Splatting (3DGS) rendering. A batch rasterization
+              strategy over three synchronized RGB-D cameras recovers orchard structure even under heavy occlusions
+              and limited lateral viewpoints, while a gradient-driven map lifecycle — executed asynchronously between
+              keyframes — preserves geometric detail and keeps GPU memory bounded throughout long field traversals.
+              Pose refinement is driven by a probabilistic KL depth-consistency term derived from LiDAR measurements,
+              back-propagated through differentiable camera projection to tighten the geometry–appearance coupling.
+            </p>
+            <p>
+              We validate the system on a tractor-mounted platform in apple and pear orchards across three
+              phenological stages — dormancy, flowering, and harvesting — using a standardized trajectory protocol
+              that evaluates both training-view reconstruction and novel-view synthesis. The latter deliberately
+              probes generalization beyond the optimized path, exposing the 3DGS overfitting that inflates scores
+              in prior SLAM benchmarks. Across all seasons and orchards, AgriGS-SLAM consistently outperforms
+              Photo-SLAM, Splat-SLAM, PINGS, and OpenGS-SLAM in rendering fidelity and trajectory accuracy,
+              while operating in real time on-tractor.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Key Contributions ─────────────────────────────────── -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-centered">Key Contributions</h2>
+          <div class="content has-text-justified">
+            <ul>
+              <li>
+                <b>🔗 Unified gradient-driven Visual–LiDAR 3DGS-SLAM.</b>
+                End-to-end real-time formulation jointly solving ∇&nbsp;Localization and ∇&nbsp;Mapping:
+                differentiable pose optimization with a LiDAR-guided KL depth-consistency loss, and incremental
+                3DGS driven by image-space gradients for bounded-memory, high-fidelity rendering across
+                long agricultural trajectories.
+              </li>
+              <li>
+                <b>📷 First real-time multi-camera 3DGS-SLAM for outdoor environments.</b>
+                Batch rasterization across three synchronized RGB-D cameras overcomes occlusion and
+                viewpoint limitations of single-camera systems in repetitive orchard rows.
+              </li>
+              <li>
+                <b>🌱 Cross-seasonal benchmark with a novel-view evaluation protocol.</b>
+                Extensive comparison against four state-of-the-art baselines in apple and pear orchards
+                across dormancy, flowering, and harvesting, using a standardized training/novel-view split
+                that prevents 3DGS overfitting from masking localization failures.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Field Platform ────────────────────────────────────── -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths has-text-centered">
+          <h2 class="title is-3">Field Platform</h2>
+          <figure>
+            <img src="/img/setup.jpg"
+                 alt="Tractor platform with three ZED X RGB-D cameras, a 32-channel Ouster LiDAR, and a Fixposition VIO-GNSS-RTK unit."
+                 style="max-width:78%; border-radius:10px; box-shadow: var(--fig-shadow);">
+            <figcaption>
+              Tractor-mounted platform with three ZED X RGB-D cameras (one front-horizontal, two vertical),
+              a 32-channel Ouster OS0 LiDAR, and a Fixposition VIO–GNSS–RTK unit used as ground truth.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Qualitative Comparison ────────────────────────────── -->
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <h2 class="title is-3 has-text-centered">Qualitative Comparison</h2>
+      <p class="has-text-centered" style="color:var(--text-muted); margin-bottom:0.8rem;">
+        Training-view renderings across apple and pear orchards in all three phenological stages,
+        for AgriGS-SLAM and all baselines.
+      </p>
+      <figure class="wide-fig">
+        <img src="/img/table_qualitative.png"
+             alt="Qualitative side-by-side: AgriGS-SLAM vs. DLO+3DGS, OpenGS-SLAM, PINGS, Splat-SLAM and Photo-SLAM across orchards and seasons.">
+        <figcaption>
+          AgriGS-SLAM consistently recovers sharp trunks, branches, and foliage across all seasons.
+          Competing methods produce blurred reconstructions, geometric artefacts, or fail to converge
+          on the repetitive row geometry of orchards.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Quantitative Results ───────────────────────────────── -->
+  <section class="section hero is-light">
+    <div class="container is-max-widescreen">
+      <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
+      <p class="has-text-centered" style="color:var(--text-muted); margin-bottom:0.8rem;">
+        Training- and novel-view PSNR / SSIM / LPIPS and Absolute Trajectory Error (ATE, m)
+        across both orchards and all three phenological stages.
+      </p>
+      <figure class="wide-fig">
+        <img src="/img/table_quantitative.png"
+             alt="Full quantitative benchmark across apple and pear orchards in dormancy, flowering and harvesting.">
+      </figure>
+      <p class="has-text-centered" style="margin-top:0.8rem; color:var(--text-muted);">
+        Full table including ablation variants is available in the
+        <a href="https://arxiv.org/abs/2510.26358" target="_blank">arXiv paper</a>
+        and on <a href="https://ieeexplore.ieee.org/document/11487946" target="_blank">IEEE Xplore</a>.
+      </p>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Novel-View Rendering ───────────────────────────────── -->
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <h2 class="title is-3 has-text-centered">Training vs. Novel-View Rendering</h2>
+      <p class="has-text-centered" style="color:var(--text-muted); margin-bottom:0.8rem;">
+        Our standardized protocol evaluates scenes from held-out novel viewpoints, exposing
+        3DGS overfitting that inflates scores in training-only benchmarks.
+      </p>
+      <figure class="wide-fig">
+        <img src="/img/table_multiview.png"
+             alt="Grid of training-view vs. novel-view renderings across orchards and seasons.">
+        <figcaption>
+          Ground truth alongside training-view and novel-view renders for both orchards across all seasons.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Dataset ────────────────────────────────────────────── -->
+  <section class="section hero is-light" id="dataset">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Dataset</h2>
+      <p class="has-text-centered" style="color:var(--text-muted); margin-bottom:1rem;">
+        Multi-sensor recordings in apple and pear orchards across dormancy, flowering, and harvesting.
+        Each sequence includes synchronized RGB-D images (3× ZED X), 32-channel LiDAR point clouds
+        (Ouster OS0), and RTK ground-truth trajectories (Fixposition VIO–GNSS).
+      </p>
+      <div class="has-text-centered" style="margin-bottom:1.2rem;">
+        <a href="https://huggingface.co/datasets/AIRLab-POLIMI/agri-gs-slam" target="_blank"
+           class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">🤗</span>
+          <span>HuggingFace Dataset</span>
+        </a>
+      </div>
+      <div class="dataset-banner">
+        <span class="tag-soon">COMING SOON</span>
+        <p>
+          The <b>full AgriGS-SLAM dataset</b> — covering all six sequences across both orchards and three
+          phenological stages — will be publicly released in collaboration with
+          <a href="https://agrifoodtef.eu" target="_blank"><b>AgrifoodTEF</b></a>
+          (EU Digital Europe Programme, GA&nbsp;Nº&nbsp;101100622).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── BibTeX ─────────────────────────────────────────────── -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-3">BibTeX</h2>
+      <pre><code>@article{usuelli2026agrigs,
+  author   = {Usuelli, Mirko and Rapado-Rincon, David and Kootstra, Gert and Matteucci, Matteo},
+  journal  = {IEEE Robotics and Automation Letters},
+  title    = {AgriGS-SLAM: Orchard Mapping Across Seasons Via Multi-View Gaussian Splatting SLAM},
+  year     = {2026},
+  volume   = {},
+  number   = {},
+  pages    = {1-8},
+  doi      = {10.1109/LRA.2026.3685453}
+}</code></pre>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── Acknowledgments & Funding ─────────────────────────── -->
+  <section class="section hero is-light" id="acknowledgments">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Acknowledgments</h2>
+      <div class="content has-text-centered">
+        <p>
+          The authors thank the <b>Fruit Research Center (FRC) in Randwijk</b> for access to the orchards.
+        </p>
+        <p>
+          Mirko Usuelli's work was carried out within the <b>Agritech National Research Center</b> and funded
+          by the European Union — <b>Next-GenerationEU</b> (PNRR – M4C2, Inv.&nbsp;1.4 – D.D.&nbsp;1032
+          17/06/2022, CN00000022).
+        </p>
+        <p>
+          Contributions from Matteo Matteucci, Gert Kootstra, and David Rapado-Rincon were co-funded by the
+          European Union — <b>Digital Europe Programme</b>
+          (<a href="https://agrifoodtef.eu" target="_blank">AgrifoodTEF</a>, GA&nbsp;Nº&nbsp;101100622).
+        </p>
+      </div>
+      <div class="funding-grid">
+        <a href="https://agritechcenter.it" target="_blank" title="Agritech National Research Center">
+          <img src="https://agritechcenter.it/wp-content/uploads/2023/11/agritech_logo.png" alt="Agritech Center">
+        </a>
+        <a href="https://next-generation-eu.europa.eu" target="_blank" title="Next Generation EU">
+          <img src="https://ec.europa.eu/regional_policy/images/information-sources/logo-download-center/nextgeneu_en.jpg" alt="Next Generation EU">
+        </a>
+        <a href="https://agrifoodtef.eu" target="_blank" title="AgrifoodTEF">
+          <img src="https://agrifoodtef.eu/themes/custom/agrifood/logo.svg" alt="AgrifoodTEF">
+        </a>
+        <a href="https://www.polimi.it" target="_blank" title="Politecnico di Milano">
+          <img src="https://www.polimi.it/_assets/4b51f00386267395f41e0940abbcd656/Images/logo.svg" alt="Politecnico di Milano">
+        </a>
+        <a href="https://www.wur.nl" target="_blank" title="Wageningen University &amp; Research">
+          <img src="https://project-effect.eu/wp-content/uploads/2019/09/3_WU.png" alt="Wageningen University &amp; Research" style="height:92px;">
+        </a>
+        <a href="https://airlab.deib.polimi.it" target="_blank" title="AIRLab – Politecnico di Milano">
+          <img src="https://airlab.deib.polimi.it/wp-content/uploads/2019/07/airlab-logo-new_cropped.png" alt="AIRLab">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              Back to <a href="/">Mirko Usuelli's homepage</a>.
+              Built with the
+              <a href="https://nerfies.github.io" target="_blank">Nerfies</a> website template.
+              Licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    (function() {
+      var btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        var cur = document.documentElement.getAttribute('data-theme');
+        var nxt = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', nxt);
+        localStorage.setItem('theme', nxt);
+      });
+    })();
+
+    // Scroll to top
+    (function() {
+      var btn = document.getElementById('scroll-top');
+      window.addEventListener('scroll', function() {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      });
+      btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>
